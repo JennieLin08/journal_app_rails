@@ -1,0 +1,40 @@
+<div class="rounded m-2 p-2 w-50">
+    <%= form_with model: [category,task ] do |form| %>
+        <div class="mb-3">
+            <%= form.label :task_name, class: "form-label" %><br />
+                <%= form.text_field :task_name , class: "form-control border
+    border-secondary w-50" %>
+
+                    <% task.errors.full_messages_for(:task_name).each do |message| %>
+                        <div class="text-danger">
+                            <%= message %>
+                        </div>
+                        <% end %>
+        </div>
+
+        <div class="mb-3">
+            <%= form.label :desc , class: "form-label" %><br />
+                <%= form.text_area :desc,class: "form-control border border-secondary w-50" %>
+
+                    <% task.errors.full_messages_for(:desc).each do |message| %>
+                        <div class="text-danger">
+                            <%= message %>
+                        </div>
+                        <% end %>
+        </div>
+
+        <div class="mb-3">
+            <%= form.label :due_date , class: "form-label" %><br />
+                <%= form.date_select :due_date,class: "form-control border border-secondary w-50" %>
+        
+                    <% task.errors.full_messages_for(:due_date).each do |message| %>
+                        <div class="text-danger">
+                            <%= message %>
+                        </div>
+                        <% end %>
+        </div>
+
+        <%= form.submit "Submit" , class: "btn btn-primary btn-sm" %>
+
+            <% end %>
+</div>

@@ -1,0 +1,30 @@
+<% tasks.each do |task| %>
+    <% if task.persisted? %>
+        <tr>
+            <td>
+                <%= task.task_name %> :
+            </td>
+            <td>
+                <%= task.desc %>
+            </td>
+            <td>
+                <button class="btn btn-sm ">
+                    <%= link_to "edit" , edit_category_task_path(task.category_id,task), class: "text-primary" %>
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-sm ">
+                    <%= link_to "delete" , category_task_path(task.category_id, task), data: { turbo_method: :delete,
+                        turbo_confirm: "Are you sure?" }, class: "text-danger" %>
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-sm ">
+                    <%= link_to "view" , category_task_path(task.category_id, task), class: "text-primary" %>
+                </button>
+            </td>
+
+
+        </tr>
+        <% end %>
+            <% end %>

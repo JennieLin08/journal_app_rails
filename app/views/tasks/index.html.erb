@@ -1,0 +1,41 @@
+<%= link_to "home",root_path %>
+<h1>Category : <%= @category.category_name %> </h1>
+new task
+
+<%= render "form", task: @task , category: @category%>
+
+<br>
+<hr>
+
+<div>
+    <%= form_with model: [@category,@task ], url: category_tasks_path(@category), method: :get do |form| %>
+    Filter :
+    <!-- <select name="filter" id="">
+        <option value="All">All</option>
+        <option value="Today">Today</option>
+    </select> -->
+    <%= select_tag(:filter, options_for_select([["All"],["Today"]], params[:filter] ),
+        class:"select") %>
+    <%= form.submit "Submit" , class: "btn btn-primary btn-sm" %>
+    <% end %>
+</div>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Task</th>
+            <th>Desc</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>View</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    <%= render "task" , tasks: @tasks %>
+    </tbody>
+</table>
+
+
+

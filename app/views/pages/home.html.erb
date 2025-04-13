@@ -1,0 +1,40 @@
+<%= link_to "logout",destroy_user_session_path, data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %>
+
+<h1>Welcome to Journal App</h1>
+
+<h5>Add Category:</h5>
+<%= render "categories/form" , category: @category %>
+ 
+<hr>
+<br>
+<h4>Category List</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Edit</th>
+             <th>Delete</th>
+             <th>View</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @cat_list.each do |cat| %>
+            <% if cat.persisted? %>
+            <tr>
+                <td><%= cat.category_name %></td>
+                <td><%= link_to "edit", edit_category_path(cat) %> </td>
+                <td><%= link_to "delete", category_path(cat), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  }  %> </td>
+                <td><%= link_to "view", category_tasks_path(cat) %> </td>
+            </tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>
+   
+
