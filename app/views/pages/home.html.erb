@@ -1,40 +1,101 @@
-<%= link_to "logout",destroy_user_session_path, data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } %>
 
-<h1>Welcome to Journal App</h1>
 
-<h5>Add Category:</h5>
-<%= render "categories/form" , category: @category %>
- 
-<hr>
 <br>
-<h4>Category List</h4>
-<table>
-    <thead>
-        <tr>
-            <th>Category</th>
-            <th>Edit</th>
-             <th>Delete</th>
-             <th>View</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% @cat_list.each do |cat| %>
-            <% if cat.persisted? %>
-            <tr>
-                <td><%= cat.category_name %></td>
-                <td><%= link_to "edit", edit_category_path(cat) %> </td>
-                <td><%= link_to "delete", category_path(cat), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  }  %> </td>
-                <td><%= link_to "view", category_tasks_path(cat) %> </td>
-            </tr>
-            <% end %>
-        <% end %>
-    </tbody>
-</table>
-   
 
+
+   
+<div class="d-flex justify-content-between">
+    <div >
+        <h4 class="text-start">CATEGORIES</h4>
+    </div>
+    <div >
+        <div class="d-flex flex-row">
+            <div class="mx-2">
+                <%= form_with model: [@cat_list ], url: root_path, method: :get do |form| %>
+                    <%= select_tag(:filter, options_for_select([["All"],["Today"]], params[:filter] ), class:"select form-control
+                        btn btn-outline-dark" , onchange: "this.form.submit();" ) %>
+                        <% end %>
+            </div>
+            <div>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Add Category
+                </button>
+            </div>
+        </div>
+        
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">New Category</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <%= render "categories/form" , category: @category %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<hr>
+
+
+<% @cat_list.each do |cat| %>
+    <% if cat.persisted? %>
+        <div class="card mt-2 border border-secondary w-75" >
+            <div class="card-header">
+                <div class="d-flex flex-row justify-content-between">
+                    <div>
+                        <strong class="text-uppercase"><%= cat.category_name %></strong>
+                    </div>
+                    <div>
+                        <%= link_to icon('fa-solid', 'pen-to-square' ), edit_category_path(cat), class: "btn btn-sm" %>
+                        <%= link_to icon('fa-solid', 'trash' ), category_path(cat), data: { turbo_method: :delete,
+                            turbo_confirm: "Are you sure?" } , class: "text-danger btn btn-sm" %>
+                        <%= link_to icon('fa-solid', 'eye' ), category_tasks_path(cat) , class: "btn btn-sm" %>
+                    </div>
+                 
+                </div>
+            </div>
+           
+                <% @cat=Category.find(cat.id) %>
+                <% if @filter && @filter=="Today" %>
+                    <% @cat_tasks=@cat.tasks.where(due_date:  @today).order(created_at: :desc) %>
+                <% else %>
+                    <% @cat_tasks=@cat.tasks.order(created_at: :desc) %>
+                <% end %>
+
+                    <% if @cat_tasks.any? %>
+                        <ol class="list-group list-group-numbered list-group-flush text-start">
+                            <% @cat_tasks.each do |task| %>
+                                <% if task.persisted? %>
+                                    <li class="list-group-item ">
+                                        <strong class="mr-2 text-capitalize">
+                                            <%= task.task_name %>
+                                        </strong>
+                                        <small class="fst-italic">
+                                            (Due Date : <%= task.due_date.strftime("%b %d, %Y") %>)
+                                        </small>
+                                    </li>
+                                <% end %>
+                            <% end %>
+                        </ul>
+                    <% else %>
+                        <p>No tasks found.</p>
+                    <% end %>
+
+            <!-- </ul> -->
+        </div>
+               
+           
+           
+                   
+         
+    <% end %>
+<% end %>

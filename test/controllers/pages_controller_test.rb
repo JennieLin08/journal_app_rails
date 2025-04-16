@@ -1,8 +1,12 @@
 require "test_helper"
 
 class PagesControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+  fixtures :users, :categories
+
   test "should get home" do
-    get pages_home_url
+    sign_in users(:one)
+    get root_path
     assert_response :success
   end
 end

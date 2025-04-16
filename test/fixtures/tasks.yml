@@ -4,8 +4,12 @@ one:
   task_name: MyString
   desc: MyString
   due_date: 2025-04-12
+  category: one
+  user: one
 
 two:
   task_name: MyString
   desc: MyString
   due_date: 2025-04-12
+  category: two
+  user: two

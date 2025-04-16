@@ -2,29 +2,21 @@
     <% if task.persisted? %>
         <tr>
             <td>
-                <%= task.task_name %> :
+                <%= task.task_name %> 
             </td>
             <td>
-                <%= task.desc %>
+                <%= task.due_date.strftime("%b %d, %Y") %>
             </td>
             <td>
-                <button class="btn btn-sm ">
-                    <%= link_to "edit" , edit_category_task_path(task.category_id,task), class: "text-primary" %>
-                </button>
+                <%= link_to icon('fa-solid', 'pen-to-square') , edit_category_task_path(task.category_id,task), class: "btn btn-sm" %>
             </td>
             <td>
-                <button class="btn btn-sm ">
-                    <%= link_to "delete" , category_task_path(task.category_id, task), data: { turbo_method: :delete,
-                        turbo_confirm: "Are you sure?" }, class: "text-danger" %>
-                </button>
+                <%= link_to icon('fa-solid', 'trash') , category_task_path(task.category_id, task), data: { turbo_method: :delete,
+                        turbo_confirm: "Are you sure?" }, class: "btn btn-sm text-danger" %>
             </td>
             <td>
-                <button class="btn btn-sm ">
-                    <%= link_to "view" , category_task_path(task.category_id, task), class: "text-primary" %>
-                </button>
+                <%= link_to icon('fa-solid', 'eye') , category_task_path(task.category_id, task), class: "btn btn-sm" %>
             </td>
-
-
         </tr>
-        <% end %>
-            <% end %>
+    <% end %>
+<% end %>

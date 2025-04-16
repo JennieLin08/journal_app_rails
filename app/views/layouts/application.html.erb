@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "J1" %></title>
+    <title><%= content_for(:title) || "JournalApp" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -13,25 +13,51 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
+    <!-- <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
+    <link rel="apple-touch-icon" href="/icon.png"> -->
+    <%= favicon_link_tag asset_path('favicon.png') %>
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+      <%# fontawesome %>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <%# bootstrap %>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
   </head>
 
   <body>
 
-    <div class="text-center">
+    <nav class="navbar bg-light-subtle text-info-emphasis">
+      <div class="container d-flex justify-content-between">
+        <a class="navbar-brand" href="#">
+          <!-- <img src="/app/assets/images/favicon.png" alt="" width="30" height="24"> -->
+           <h4><%= image_tag 'favicon.png' , style: 'height:50px;width:auto;', class: "mx-2" %>Journal App</h4>
+        </a>
+          <% if user_signed_in? %>
+            <%= link_to "Logout" ,destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+            class: "btn btn-outline-dark" %>
+          <% end %>
+      </div>
+    </nav>
+
+    <div class="text-center container my-2">
       <% flash.each do |type, msg| %>
         <div class="alert alert-<%= type %>">
           <%= msg %>
         </div>
-        <% end %>
+      <% end %>
+    </div>
+
+    <div class="container-fluid my-2 text-center d-flex flex-column justify-content-center w-50">
+      <%= yield %>
     </div>
     
-    <%= yield %>
+
   </body>
 </html>

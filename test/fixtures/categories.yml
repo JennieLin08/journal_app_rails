@@ -3,9 +3,9 @@
 one:
   category_name: MyString
   description: MyString
-  user_id: 1
+  user: one
 
 two:
   category_name: MyString
   description: MyString
-  user_id: 1
+  user: two

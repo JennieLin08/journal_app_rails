@@ -1,39 +1,62 @@
-<%= link_to "home",root_path %>
-<h1>Category : <%= @category.category_name %> </h1>
-new task
-
-<%= render "form", task: @task , category: @category%>
+<%= link_to "Back",root_path, class: "btn btn-outline-dark w-25" %>
+<br>
+<h2>Category : <%= @category.category_name %> </h2>
+<h5 class="fst-italic">( <%= @category.description %> )</h5>
 
 <br>
-<hr>
+<div class="d-flex flex-row-reverse">
+    <div>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-dark mx-2" data-bs-toggle="modal" data-bs-target="#taskModal">
+            Add Task
+        </button>
+    </div>
+    
+    <div>
+        <%= form_with model: [@category,@task ], url: category_tasks_path(@category), method: :get do |form| %>
+            <%= select_tag(:filter, options_for_select([["All"],["Today"]], params[:filter] ), class:"select form-control btn btn-outline-dark" ,
+                onchange: "this.form.submit();" ) %>
+        <% end %>
+    </div>
+    
 
-<div>
-    <%= form_with model: [@category,@task ], url: category_tasks_path(@category), method: :get do |form| %>
-    Filter :
-    <!-- <select name="filter" id="">
-        <option value="All">All</option>
-        <option value="Today">Today</option>
-    </select> -->
-    <%= select_tag(:filter, options_for_select([["All"],["Today"]], params[:filter] ),
-        class:"select") %>
-    <%= form.submit "Submit" , class: "btn btn-primary btn-sm" %>
-    <% end %>
+   
 </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">New Task</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <%= render "form" , task: @task , category: @category%>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<table>
+
+
+<hr>
+
+
+
+
+<table class="table">
     <thead>
         <tr>
-            <th>Task</th>
-            <th>Desc</th>
-            <th>Edit</th>
-            <th>Delete</th>
-            <th>View</th>
+            <th>TASKS</th>
+            <th>DUE DATE</th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-
-    <%= render "task" , tasks: @tasks %>
+        <%= render "task" , tasks: @tasks %>
     </tbody>
 </table>
 

@@ -8,3 +8,12 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+@import "font-awesome";
+ body {
+     height: 100vh;
+     background-image: url('bg.jpg');
+     background-repeat: no-repeat;
+     background-position: center;
+     background-size: cover;
+ 
+ }

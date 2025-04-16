@@ -1,33 +1,60 @@
 require "test_helper"
 
 class CategoriesControllerTest < ActionDispatch::IntegrationTest
-  test "should get index" do
-    get categories_index_url
-    assert_response :success
-  end
-
-  test "should get show" do
-    get categories_show_url
-    assert_response :success
+ include Devise::Test::IntegrationHelpers
+  fixtures :users, :categories
+  setup do
+    sign_in users(:one)
   end
 
   test "should get new" do
-    get categories_new_url
+    
+    get new_category_path
     assert_response :success
   end
 
-  test "should get create" do
-    get categories_create_url
-    assert_response :success
+  test "should get create and redirect to root path" do
+    # sign_in users(:one)
+    assert_difference("Category.count", 1) do
+      post categories_path, params: {
+        category: {
+          category_name: "Test Category",
+          description: "This is a test category"
+        }
+      }
+    end
+
+    assert_redirected_to root_path
+    follow_redirect!
   end
 
-  test "should get update" do
-    get categories_update_url
-    assert_response :success
+  test "should update and redirect to root path" do
+    # sign_in users(:one)
+    category = categories(:one)
+
+    patch category_path(category), params: {
+      category: {
+        category_name: "Updated Cat Name",
+        description: "Updated Description"
+      }
+    }
+
+    assert_redirected_to root_path
+    follow_redirect!
+    
   end
 
-  test "should get destroy" do
-    get categories_destroy_url
-    assert_response :success
+  test "should get destroy and redirect to root path" do
+    # sign_in users(:one)
+    category = categories(:one)
+
+     patch category_path(category), params: {
+      category: {
+        status: false
+      }
+    }
+
+    assert_redirected_to root_path
+    follow_redirect!
   end
 end
